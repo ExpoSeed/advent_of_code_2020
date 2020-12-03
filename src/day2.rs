@@ -57,12 +57,18 @@ pub fn solve_part1_no_generator(input: &str) -> u32 {
     input
         .lines()
         .fold(0, |count, line| {
-            let v: Vec<&str> = line.split(" ").collect();
-            let bounds: Vec<&str> = v[0].split("-").collect();
-            let min = bounds[0].parse().unwrap();
-            let max = bounds[1].parse().unwrap();
-            let letter = v[1].chars().next().unwrap();
-            let password = String::from(v[2]);
+            // let v: Vec<&str> = line.split(" ").collect();
+            // let bounds: Vec<&str> = v[0].split("-").collect();
+            // let min = bounds[0].parse().unwrap();
+            // let max = bounds[1].parse().unwrap();
+            // let letter = v[1].chars().next().unwrap();
+            // let password = String::from(v[2]);
+            let mut v = line.split(" ");
+            let mut bounds = v.next().unwrap().split("-");
+            let min = bounds.next().unwrap().parse().unwrap();
+            let max = bounds.next().unwrap().parse().unwrap();
+            let letter = v.next().unwrap().chars().next().unwrap();
+            let password = String::from(v.next().unwrap());
             let letter_count = password.matches(letter).count() as u32;
             count + if letter_count >= min && letter_count <= max {
                 1
@@ -77,12 +83,18 @@ pub fn solve_part2_no_generator(input: &str) -> u32 {
     input
         .lines()
         .fold(0, |count, line| {
-            let v: Vec<&str> = line.split(" ").collect();
-            let bounds: Vec<&str> = v[0].split("-").collect();
-            let index1: usize = bounds[0].parse().unwrap();
-            let index2: usize = bounds[1].parse().unwrap();
-            let letter = v[1].chars().next().unwrap();
-            let password = String::from(v[2]);
+            // let v: Vec<&str> = line.split(" ").collect();
+            // let bounds: Vec<&str> = v[0].split("-").collect();
+            // let index1: usize = bounds[0].parse().unwrap();
+            // let index2: usize = bounds[1].parse().unwrap();
+            // let letter = v[1].chars().next().unwrap();
+            // let password = String::from(v[2]);
+            let mut v = line.split(" ");
+            let mut bounds = v.next().unwrap().split("-");
+            let index1: usize = bounds.next().unwrap().parse().unwrap();
+            let index2: usize = bounds.next().unwrap().parse().unwrap();
+            let letter = v.next().unwrap().chars().next().unwrap();
+            let password = String::from(v.next().unwrap());
             let bytes = password.as_bytes();
             count + if (bytes[index1 - 1] as char == letter) ^ 
                        (bytes[index2 - 1] as char == letter) {

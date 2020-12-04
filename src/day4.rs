@@ -37,6 +37,39 @@ pub fn solve_part2(input: &str) -> usize {
 }
 
 fn is_valid_entry(entry: &str) -> bool {
+    let mut iter = entry.split(":");
+    let first = iter.next().unwrap();
+    if first == "cid" {
+        return true;
+    }
+    let value = if let Some(x) = iter.next() {
+        x
+    } else {
+        return false;
+    };
+
+    match first {
+        "byr" => matches!(value.parse::<usize>(), Ok(number) if (1920..=2002).contains(&number)),
+        "iyr" => matches!(value.parse::<usize>(), Ok(number) if (2010..=2020).contains(&number)),
+        "eyr" => matches!(value.parse::<usize>(), Ok(number) if (2020..=2030).contains(&number)),
+        "hgt" => {
+            let (height, unit) = value.split_at(value.len() - 2);
+            let range = match unit {
+                "cm" => 150..=193,
+                "in" => 59..=76,
+                _ => return false
+            };
+            matches!(height.parse::<usize>(), Ok(number) if range.contains(&number))
+        }
+        "hcl" => value.starts_with('#') && value[1..].chars().all(|byte| byte.is_digit(16)),
+        "ecl" => matches!(value, "amb" | "blu" | "brn" | "gry" | "grn" | "hzl" | "oth"),
+        "pid" => value.len() == 9 && value.parse::<usize>().is_ok(),
+        _ => panic!("bad field")
+    }
+}
+
+// is 70-80 us faster for some reason
+fn is_valid_entry_old(entry: &str) -> bool {
     // println!("{}", entry.split(":").nth(1).unwrap());
     let mut iter = entry.split(":");
     match iter.next().unwrap() {

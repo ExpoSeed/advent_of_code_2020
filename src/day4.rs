@@ -69,6 +69,7 @@ fn is_valid_entry(entry: &str) -> bool {
 }
 
 // is 70-80 us faster for some reason
+#[allow(dead_code)]
 fn is_valid_entry_old(entry: &str) -> bool {
     // println!("{}", entry.split(":").nth(1).unwrap());
     let mut iter = entry.split(":");

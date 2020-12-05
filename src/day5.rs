@@ -32,59 +32,6 @@ pub fn solve_part2(input: &str) -> usize {
     unreachable!()
 }
 
-// much simpler! thank you SBird! 
-// just look for the missing seat not at the front or back
-// but is slower, perhaps the for loop above is getting vectorized
-use std::collections::HashSet;
-#[aoc(day5, part2, hashset)]
-pub fn solve_part2_hashset(input: &str) -> usize {
-    let ids: HashSet<usize> = input
-        .lines()
-        .map(|line| get_seat_id(line))
-        .collect();
-    
-    (70..939)
-        .find(|num| !ids.contains(num))
-        .unwrap()
-}
-
-#[allow(unused_must_use)]
-#[aoc(day5, part2, boolarray_map)]
-pub fn solve_part2_boolarray_map(input: &str) -> usize {
-    let mut ids: [bool; 1024] = [false; 1024];
-    input
-        .lines()
-        .map(|line| ids[get_seat_id(line)] = true);
-
-    (70..939)
-        .find(|num| !ids[*num as usize])
-        .unwrap()
-}
-
-#[aoc(day5, part2, boolarray_foreach)]
-pub fn solve_part2_boolarray_foreach(input: &str) -> usize {
-    let mut ids: [bool; 1024] = [false; 1024];
-    input
-        .lines()
-        .for_each(|line| ids[get_seat_id(line)] = true);
-
-    (70..939)
-        .find(|num| !ids[*num as usize])
-        .unwrap()
-}
-
-#[aoc(day5, part2, boolarray_forloop)]
-pub fn solve_part2_boolarray_forloop(input: &str) -> usize {
-    let mut ids: [bool; 1024] = [false; 1024];
-    for line in input.lines() {
-        ids[get_seat_id(line)] = true;
-    }
-
-    (70..939)
-        .find(|num| !ids[*num as usize])
-        .unwrap()
-}
-
 // much more clever! thank you ShantyTown!
 // the positions are just binary numbers! 
 fn get_seat_id(line: &str) -> usize {

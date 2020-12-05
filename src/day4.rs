@@ -36,6 +36,7 @@ pub fn solve_part2(input: &str) -> usize {
         })
 }
 
+// thank you Globi from the Rust server!
 fn is_valid_entry(entry: &str) -> bool {
     let mut iter = entry.split(":");
     let first = iter.next().unwrap();
@@ -69,6 +70,7 @@ fn is_valid_entry(entry: &str) -> bool {
 }
 
 // is 70-80 us faster for some reason
+// this was my original solution
 #[allow(dead_code)]
 fn is_valid_entry_old(entry: &str) -> bool {
     // println!("{}", entry.split(":").nth(1).unwrap());

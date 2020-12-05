@@ -32,6 +32,22 @@ pub fn solve_part2(input: &str) -> usize {
     unreachable!()
 }
 
+// much simpler! thank you SBird! 
+// just look for the missing seat not at the front or back
+// but is slower, perhaps the for loop above is getting vectorized
+use std::collections::HashSet;
+#[aoc(day5, part2, linear_search)]
+pub fn solve_part2_linear_search(input: &str) -> usize {
+    let ids: HashSet<usize> = input
+        .lines()
+        .map(|line| get_seat_id(line))
+        .collect();
+    
+    (70..939)
+        .find(|num| !ids.contains(num))
+        .unwrap()
+}
+
 // much more clever! thank you ShantyTown!
 // the positions are just binary numbers! 
 fn get_seat_id(line: &str) -> usize {

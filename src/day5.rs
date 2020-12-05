@@ -32,7 +32,38 @@ pub fn solve_part2(input: &str) -> usize {
     unreachable!()
 }
 
+// much more clever! thank you ShantyTown!
+// the positions are just binary numbers! 
 fn get_seat_id(line: &str) -> usize {
+    let mut iter = line.chars();
+    let row = {
+        let mut num = 0;
+        for i in (0..7).rev() {
+            num |= convert_to_bit(iter.next()) << i;
+        }
+        num
+    };
+    let col = {
+        let mut num = 0;
+        for i in (0..3).rev() {
+            num |= convert_to_bit(iter.next()) << i;
+        }
+        num
+    };
+    row * 8 + col
+}
+
+fn convert_to_bit(letter: Option<char>) -> usize {
+    match letter {
+        Some('B') | Some('R') => 1,
+        Some('F') | Some('L') => 0,
+        _ => panic!("bad input"),
+    }
+}
+
+// my original solution
+#[allow(dead_code)]
+fn get_seat_id_bounds(line: &str) -> usize {
     let mut iter = line.chars();
     let row = {
         let mut lower_bound = 0;

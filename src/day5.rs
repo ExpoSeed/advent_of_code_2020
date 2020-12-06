@@ -12,6 +12,28 @@ pub fn solve_part1(input: &str) -> usize {
         })
 }
 
+// with the binary trick
+#[aoc(day5, part1, optimized)]
+pub fn solve_part1_optimized(input: &str) -> usize {
+    input
+        .lines()
+        .fold(0, |current_max, line| {
+            let mut seat_id = 0;
+            for (index, letter) in line.chars().enumerate() {
+                seat_id |= match letter {
+                    'B' | 'R' => 1,
+                    'F' | 'L' => 0,
+                    invalid => panic!("invalid input: {}", invalid),
+                } << (10 - index);
+            }
+            if seat_id > current_max {
+                seat_id
+            } else {
+                current_max
+            }
+        })
+}
+
 #[aoc(day5, part2)]
 pub fn solve_part2(input: &str) -> usize {
     let ids: Vec<usize> = input
@@ -30,6 +52,33 @@ pub fn solve_part2(input: &str) -> usize {
         }
     }
     unreachable!()
+}
+
+// SBird did a linear search for the missing seat
+// Knarkzel interpreted all as one number instead of two
+// I thought of boolean array to avoid a heap allocation
+// possibly 
+#[aoc(day5, part2, optimized)]
+pub fn solve_part2_optimized(input: &str) -> usize {
+    let mut present_seats = [false; 1024];
+    for line in input.lines() {
+        let mut num = 0;
+        for (index, letter) in line.chars().enumerate() {
+            num |= match letter {
+                'B' | 'R' => 1,
+                'F' | 'L' => 0,
+                invalid => panic!("invalid input: {}", invalid),
+            } << (9 - index);
+        }
+        present_seats[num] = true;
+    };
+
+    for seat in 1..1024 {
+        if present_seats[seat - 1] && !present_seats[seat] && present_seats[seat + 1] {
+            return seat;
+        }
+    };
+    panic!("seat not found")
 }
 
 // much more clever! thank you ShantyTown!
